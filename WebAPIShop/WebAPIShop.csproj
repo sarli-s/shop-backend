@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <Content Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EditorConfigFiles Remove="F:\WebAPIShop\נשאר TRY ולידציה מייל לנקות\WebAPIShop\WebAPIShop\.editorconfig" />
   </ItemGroup>
 
@@ -36,7 +43,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\NewFolder\" />
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
