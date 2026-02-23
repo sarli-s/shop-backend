@@ -40,7 +40,7 @@ namespace WebAPIShop.Controllers
         {
             OrderDTO createdOrder = await _ordersService.AddOrder(order);
             if(createdOrder != null)
-                return CreatedAtAction(nameof(Get), new{id = createdOrder.userId}, createdOrder);
+                return CreatedAtAction(nameof(Get), new{id = createdOrder.UserId}, createdOrder);
             return BadRequest("order d'ont eccept!!");
         }
 

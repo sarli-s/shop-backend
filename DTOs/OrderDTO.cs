@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace DTOs
 {
-    public record OrderDTO(DateOnly OrderDate, int OrderId, double OrderSum, ICollection<OrderItemDTO> OrderItems
-                                                                           , int userId);
+    public record OrderDTO(int OrderId,
+        DateOnly OrderDate,
+        ICollection<OrderItemDTO> OrderItems,
+        int UserId,
+        string Status="באריזה",
+        double OrderSum=0)
+;
 }
+
+

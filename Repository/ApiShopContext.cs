@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
-using Repository;
-=======
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
+
 using Entitys;
 
 namespace Repository;
 
 public partial class dbSHOPContext : DbContext
 {
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
+
     public dbSHOPContext()
     {
     }
 
-=======
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
     public dbSHOPContext(DbContextOptions<dbSHOPContext> options)
         : base(options)
     {
@@ -32,17 +27,14 @@ public partial class dbSHOPContext : DbContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<Rating> Ratings { get; set; }
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-682T053;Initial Catalog=API_SHOP;Integrated Security=True;Trust Server Certificate=True");
-=======
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
-
-    public virtual DbSet<User> Users { get; set; }
+    {
+        if (!optionsBuilder.IsConfigured)
+            optionsBuilder.UseSqlServer("projectAPI");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -61,17 +53,12 @@ public partial class dbSHOPContext : DbContext
             entity.Property(e => e.OrderDate).HasColumnName("ORDER_DATE");
             entity.Property(e => e.OrderSum).HasColumnName("ORDER_SUM");
             entity.Property(e => e.Status)
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValue("באריזה")
-=======
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasDefaultValue("באריזה")
                 .HasAnnotation("Relational:DefaultConstraintName", "DF_Orders_STATUS")
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
+
                 .HasColumnName("STATUS");
             entity.Property(e => e.UserId).HasColumnName("USER_ID");
 
@@ -86,14 +73,7 @@ public partial class dbSHOPContext : DbContext
 
             entity.Property(e => e.OrderItemId).HasColumnName("ORDER_ITEM_ID");
             entity.Property(e => e.Customtext)
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValue(" ")
-                .HasColumnName("CUSTOMTEXT");
-            entity.Property(e => e.OrderId).HasColumnName("ORDER_ID");
-            entity.Property(e => e.Popularcolore)
-=======
+
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -103,7 +83,6 @@ public partial class dbSHOPContext : DbContext
             entity.Property(e => e.OrderId).HasColumnName("ORDER_ID");
             entity.Property(e => e.Popularcolore)
                 .IsRequired()
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("POPULARCOLORE");
@@ -126,17 +105,11 @@ public partial class dbSHOPContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("PRODUCT_ID");
             entity.Property(e => e.CategoryId).HasColumnName("CATEGORY_ID");
             entity.Property(e => e.Colors)
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValue("[]")
-=======
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasDefaultValue("[]")
                 .HasAnnotation("Relational:DefaultConstraintName", "DF_Products_COLORS")
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
                 .HasColumnName("COLORS");
             entity.Property(e => e.Description)
                 .IsUnicode(false)
@@ -207,17 +180,12 @@ public partial class dbSHOPContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("phon");
             entity.Property(e => e.Role)
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasDefaultValue("user")
-=======
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasDefaultValue("user")
                 .HasAnnotation("Relational:DefaultConstraintName", "DF_User_role")
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs
+
                 .HasColumnName("role");
             entity.Property(e => e.UserEmail)
                 .HasMaxLength(50)
@@ -241,8 +209,4 @@ public partial class dbSHOPContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-<<<<<<< Updated upstream:Repository/ApiShopContext.cs
 }
-=======
-}
->>>>>>> Stashed changes:Repository/dbSHOPContext.cs

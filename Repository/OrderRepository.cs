@@ -16,7 +16,10 @@ namespace Repository
         public async Task<Order> GetOrderById(int id)
         {
             //return await _dbSHOPContext.FindAsync<Order>(id);
-            Order order = await _dbSHOPContext.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.OrderId == id);
+            Order order = await _dbSHOPContext.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi=>oi.Product)
+                .FirstOrDefaultAsync(o => o.OrderId == id);
             return order;
         }
 
@@ -26,7 +29,7 @@ namespace Repository
 
             await _dbSHOPContext.AddAsync(order);
             await _dbSHOPContext.SaveChangesAsync();
-            return order;// await _dbSHOPContext.Orders.FindAsync(order.OrderId);
+            return await GetOrderById(order.OrderId);// await _dbSHOPContext.Orders.FindAsync(order.OrderId);
         }
 
     }

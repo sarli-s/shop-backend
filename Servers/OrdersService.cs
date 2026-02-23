@@ -43,7 +43,7 @@ public class OrdersService : IOrdersService
         }
         if(realSum != userSum)
         {
-            _logger.LogWarning("Order sum mismatch for user {UserId}. Client sent: {ClientSum}, Server calculated: {ServerSum} 😖", order.userId, order.OrderSum, realSum);
+            _logger.LogWarning("Order sum mismatch for user {UserId}. Client sent: {ClientSum}, Server calculated: {ServerSum} 😖", order.UserId, order.OrderSum, realSum);
             order = order with { OrderSum = realSum };
 
         }
