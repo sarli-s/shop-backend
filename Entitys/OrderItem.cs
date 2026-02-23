@@ -21,3 +21,4 @@ public partial class OrderItem
 
     public virtual Product Product { get; set; } = null!;
 }
+

@@ -27,7 +27,8 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 
 builder.Services.AddScoped<IPasswordService, PasswordService>();
-builder.Services.AddDbContext<dbSHOPContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Ayal")));
+
+builder.Services.AddDbContext<dbSHOPContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("projectWithAngular")));
 
 builder.Host.UseNLog();
 

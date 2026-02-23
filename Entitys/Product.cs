@@ -19,9 +19,10 @@ public partial class Product
 
     public string Colors { get; set; } = null!;
 
-    public string Toptest { get; set; } = null!;
+    public string Toptext { get; set; } = null!;
 
     public virtual Category Category { get; set; } = null!;
+
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }
