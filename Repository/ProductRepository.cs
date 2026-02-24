@@ -20,22 +20,49 @@ namespace Repository
         }
 
         public async Task<(List<Product> Items, int TotalCount)> GetProducts(string? description, int? minPrice, int? maxPrice, int[]? categoryIds,
-            int? limit, string? orderby, int? position)
+    int? limit, string? orderby, int? position)
         {
-            var query = _dbSHOPContext.Products.Where(product =>
-            (description == null ? (true) : (product.Description.Contains(description)))
-            && ((minPrice == null) ? (true) : (product.Price >= minPrice))
-            && ((maxPrice == null) ? (true) : (product.Price <= maxPrice))
-            && ((categoryIds == null) ? (true) : (categoryIds.Contains(product.CategoryId))))
-            .OrderBy(product=>product.Price);
+            // 1. נתחיל משאילתה בסיסית
+            var query = _dbSHOPContext.Products.AsQueryable();
 
-            Console.WriteLine(query.ToQueryString());
-            int pos=position ?? 1;
-            int skip=limit ?? 20;
-            List<Product> products = await query.Skip((pos - 1) * skip)
-            .Take(skip).Include(product => product.Category).ToListAsync();
+            // 2. נוסיף סינונים רק אם הפרמטרים באמת נשלחו
+            if (!string.IsNullOrEmpty(description))
+            {
+                query = query.Where(p => p.Description.Contains(description));
+            }
 
-            var total = await query.CountAsync();
+            if (minPrice.HasValue)
+            {
+                query = query.Where(p => p.Price >= minPrice.Value);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price <= maxPrice.Value);
+            }
+
+            // בדיקה חשובה: גם null וגם שלא יהיה מערך ריק
+            if (categoryIds != null && categoryIds.Length > 0)
+            {
+                query = query.Where(p => categoryIds.Contains(p.CategoryId));
+            }
+
+            // 3. מיון
+            query = query.OrderBy(p => p.Price);
+
+            // 4. חישוב כמות כוללת (לפני ה-Skip וה-Take)
+            int total = await query.CountAsync();
+
+            // 5. חלוקה לעמודים (Paging)
+            int pageSize = limit ?? 20;
+            int currentPage = position ?? 1;
+
+            List<Product> products = await query
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .Include(p => p.Category)
+                .ToListAsync();
+
             return (products, total);
         }
 
