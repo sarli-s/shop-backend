@@ -62,17 +62,19 @@ namespace WebAPIShop.Controllers
         }
        
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] UserDTO user, string password)
+        public async Task<ActionResult<UserDTO>> Put(int id, [FromBody] UserDTO user, [FromQuery] string password)
         {
-            ResultValidUser<bool> isUpdateSuccessfulResult = await _userService.UpdateUser(id, user, password);
-            bool isUpdateSuccessful = isUpdateSuccessfulResult.data;
-            if (isUpdateSuccessful)
+            ResultValidUser<UserDTO> result = await _userService.UpdateUser(id, user, password);
+
+            if (result.data != null)
             {
-                return Ok();
+                return Ok(result.data); // כאן אנחנו מחזירים את האובייקט המעודכן!
             }
-            if(isUpdateSuccessfulResult.InvalidPassword)
+
+            if (result.InvalidPassword)
                 return BadRequest("Password is not strong enough");
-            return BadRequest("This email is using already");
+
+            return BadRequest("This email is already in use");
         }
 
         [HttpDelete("{id}")]

@@ -36,6 +36,26 @@ namespace WebAPIShop.Controllers
             }
             return NoContent();
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDTO>> GetById(int id)
+        {
+            var product = await _prudectsService.GetProductById(id);
+            if (product == null) return NotFound();
+            return Ok(product);
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            // בדיקה שהמוצר קיים לפני מחיקה
+            var product = await _prudectsService.GetProductById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            await _prudectsService.DeleteProduct(id);
+            return NoContent(); // מחזיר קוד 204 (הצליח אבל אין תוכן להחזיר)
+        }
 
 
     }

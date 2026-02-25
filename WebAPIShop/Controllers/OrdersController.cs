@@ -34,7 +34,12 @@ namespace WebAPIShop.Controllers
             }
             return NoContent();
         }
-  
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> Get()
+        {
+            var orders = await _ordersService.GetAllOrders();
+            return orders != null ? Ok(orders) : NoContent();
+        }
         [HttpPost]
         public async Task<ActionResult<OrderDTO>> Post([FromBody] OrderDTO order)
         {
@@ -44,19 +49,13 @@ namespace WebAPIShop.Controllers
             return BadRequest("order d'ont eccept!!");
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<OrderDTO>>> Get()
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
         {
-
-            List<OrderDTO> metaData = await _ordersService.GetOrders();
-            if(metaData != null) 
-            {
-                return Ok(metaData);
-            }
-            return NoContent();
+            var updated = await _ordersService.UpdateOrderStatus(id, status);
+            if (updated) return Ok();
+            return BadRequest("Could not update status");
         }
-
-
 
     }
 }

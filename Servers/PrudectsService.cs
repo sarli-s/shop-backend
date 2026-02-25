@@ -34,5 +34,14 @@ public class PrudectsService : IPrudectsService
         };
         return responseDTO;
     }
+    public async Task DeleteProduct(int id)
+    {
+        await _productRepository.DeleteProduct(id);
+    }
+    public async Task<ProductDTO> GetProductById(int id)
+    {
+        var product = await _productRepository.GetProductById(id);
+        return _mapper.Map<Product, ProductDTO>(product);
+    }
 
 }

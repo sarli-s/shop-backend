@@ -38,11 +38,21 @@ namespace Repository
         }
 
 
-        public async Task UpdateUser( User updatedUser)
+        public async Task UpdateUser(User updatedUser)
         {
-            _dbSHOPContext.Users.Update(updatedUser);
+            _dbSHOPContext.Entry(updatedUser).State = EntityState.Modified;
+            // אם הסיסמה היא שדה שלא תמיד מעדכנים, אפשר לסמן רק שדות ספציפיים
             await _dbSHOPContext.SaveChangesAsync();
+        }
 
+        public async Task DeleteUser(int id)
+        {
+            var user = await _dbSHOPContext.Users.FindAsync(id);
+            if (user != null)
+            {
+                _dbSHOPContext.Users.Remove(user);
+                await _dbSHOPContext.SaveChangesAsync();
+            }
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -50,10 +60,6 @@ namespace Repository
             return await _dbSHOPContext.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x=>x.UserEmail==email);
-        }
-
-        public void DeleteUser(int id)
-        {
         }
     }
 }

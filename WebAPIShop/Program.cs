@@ -28,7 +28,7 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 
-builder.Services.AddDbContext<dbSHOPContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("projectWithAngular")));
+builder.Services.AddDbContext<dbSHOPContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Ayal")));
 
 builder.Host.UseNLog();
 
@@ -46,7 +46,6 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });
-
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,11 @@ namespace DTOs
         double Price,
         string? Description,
         string? ImageUrl,
-        string Colors,
+        string[] Colors,
         string Toptext,
         CategoryDTO Category);
 }
-
+//this.productService.getProducts().subscribe((response: PageResponse<ProductDTO>) => {
+//    this.products = response.data;
+//    this.totalCount = response.totalItems;
+//});
