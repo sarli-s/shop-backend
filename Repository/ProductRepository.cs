@@ -75,6 +75,20 @@ namespace Repository
             }
         }
 
+        // Repository/ProductRepository.cs
+        public async Task<Product> AddProduct(Product product)
+        {
+            _dbSHOPContext.Products.Add(product);
+            await _dbSHOPContext.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task UpdateProduct(int id, Product product)
+        {
+            _dbSHOPContext.Entry(product).State = EntityState.Modified;
+            await _dbSHOPContext.SaveChangesAsync();
+        }
+
     }
 
 }

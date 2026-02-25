@@ -26,7 +26,6 @@ namespace Repository
 
         public async Task<Order> AddOrder(Order order)
         {
-
             await _dbSHOPContext.AddAsync(order);
             await _dbSHOPContext.SaveChangesAsync();
             return await GetOrderById(order.OrderId);// await _dbSHOPContext.Orders.FindAsync(order.OrderId);
