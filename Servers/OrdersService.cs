@@ -52,4 +52,16 @@ public class OrdersService : IOrdersService
         return _mapper.Map < Order, OrderDTO > (await _orderRepository.AddOrder(o));
 
     }
+
+    public async Task<List<OrderDTO>> GetOrders()
+    {
+        List<Order> orders = await _orderRepository.GetOrders();
+        List<OrderDTO> orderDtos= _mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        return orderDtos;
+
+        //return _mapper.Map<List<Order>, List<OrderDTO>>(await _orderRepository.GetOrders());
+
+    }
+
+
 }

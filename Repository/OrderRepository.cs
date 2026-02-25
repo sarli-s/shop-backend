@@ -32,5 +32,9 @@ namespace Repository
             return await GetOrderById(order.OrderId);// await _dbSHOPContext.Orders.FindAsync(order.OrderId);
         }
 
+        public async Task<List<Order>> GetOrders()
+        {
+            return await _dbSHOPContext.Orders.ToListAsync();
+        }
     }
 }

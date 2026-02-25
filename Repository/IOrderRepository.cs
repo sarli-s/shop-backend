@@ -6,5 +6,7 @@ namespace Repository
     {
         Task<Order> AddOrder(Order order);
         Task<Order> GetOrderById(int id);
+        Task<List<Order>> GetOrders();
+
     }
 }

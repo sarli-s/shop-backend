@@ -9,5 +9,7 @@ namespace Servers
 
         Task<OrderDTO> AddOrder(OrderDTO order);
         Task<OrderDTO> GetOrderById(int id);
+        Task<List<OrderDTO>> GetOrders();
+
     }
 }

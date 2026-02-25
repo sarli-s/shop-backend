@@ -44,7 +44,19 @@ namespace WebAPIShop.Controllers
             return BadRequest("order d'ont eccept!!");
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<OrderDTO>>> Get()
+        {
 
-       
+            List<OrderDTO> metaData = await _ordersService.GetOrders();
+            if(metaData != null) 
+            {
+                return Ok(metaData);
+            }
+            return NoContent();
+        }
+
+
+
     }
 }
