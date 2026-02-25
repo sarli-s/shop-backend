@@ -52,4 +52,26 @@ public class OrdersService : IOrdersService
         return _mapper.Map < Order, OrderDTO > (await _orderRepository.AddOrder(o));
 
     }
+    public async Task<IEnumerable<OrderDTO>> GetAllOrders()
+    {
+        var orders = await _orderRepository.GetAllOrders(); // את זה ניצור ב-Repository מיד
+        return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(orders);
+    }
+
+    // שליפת הזמנות למשתמש ספציפי (לפרופיל אישי)
+    public async Task<IEnumerable<OrderDTO>> GetOrdersByUserId(int userId)
+    {
+        var allOrders = await _orderRepository.GetAllOrders();
+        // מסננים ב-Service (או ב-Repository אם רוצים להיות יעילים יותר)
+        var userOrders = allOrders.Where(o => o.UserId == userId);
+        return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(userOrders);
+    }
+    public async Task<bool> UpdateOrderStatus(int id, string status)
+    {
+        var order = await _orderRepository.GetOrderById(id);
+        if (order == null) return false;
+
+        order.Status = status;
+        return await _orderRepository.UpdateOrder(order);
+    }
 }

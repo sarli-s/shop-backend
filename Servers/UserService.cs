@@ -56,27 +56,32 @@ public class UserService : IUserService
 
         return resultValidUser;
     }
-    
 
-    public async Task<ResultValidUser<bool>> UpdateUser(int id, UserDTO user, string password)
+
+    public async Task<ResultValidUser<UserDTO>> UpdateUser(int id, UserDTO user, string password)
     {
         Password passwordAfterCheck = _passwordService.CheckPassword(password);
         if (passwordAfterCheck.Level < 3)
         {
-            return new ResultValidUser<bool>(true, false, false);
+            return new ResultValidUser<UserDTO>(true, false, null);
         }
-        else if (ExistsUserWithTheSameEmail(user.UserId, user.UserEmail).Result)
+
+        if (await ExistsUserWithTheSameEmail(id, user.UserEmail))
         {
-            return new ResultValidUser<bool>(false, true, false);
+            return new ResultValidUser<UserDTO>(false, true, null);
         }
-        else
-        {
-            User user1 = _mapper.Map<UserDTO, User>(user);
-            user1.UserPassword = password;
-            user1.UserId = id;
-            await _userRepository.UpdateUser(user1);
-            return new ResultValidUser<bool>(false,false,true);
-        }
+
+        User userToUpdate = _mapper.Map<UserDTO, User>(user);
+        userToUpdate.UserPassword = password;
+        userToUpdate.UserId = id;
+
+        await _userRepository.UpdateUser(userToUpdate);
+
+        // שליפת המשתמש המעודכן מה-DB כדי להחזיר נתונים טריים
+        var updatedUser = await _userRepository.GetUserById(id);
+        var updatedDto = _mapper.Map<User, UserDTO>(updatedUser);
+
+        return new ResultValidUser<UserDTO>(false, false, updatedDto);
     }
     public async Task<UserDTO> Login(string email,string password)//LoginUserDTO loginUser)
     {

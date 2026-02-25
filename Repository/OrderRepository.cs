@@ -31,6 +31,19 @@ namespace Repository
             await _dbSHOPContext.SaveChangesAsync();
             return await GetOrderById(order.OrderId);// await _dbSHOPContext.Orders.FindAsync(order.OrderId);
         }
+        public async Task<IEnumerable<Order>> GetAllOrders()
+        {
+            return await _dbSHOPContext.Orders
+                .Include(o => o.OrderItems) // חשוב! כדי לראות מה קנו
+                .ThenInclude(oi => oi.Product) // כדי לראות את שם המוצר והמחיר
+                .ToListAsync();
+        }
+        public async Task<bool> UpdateOrder(Order order)
+        {
+            _dbSHOPContext.Orders.Update(order);
+            await _dbSHOPContext.SaveChangesAsync();
+            return true;
+        }
 
     }
 }

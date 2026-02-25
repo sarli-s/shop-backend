@@ -65,6 +65,16 @@ namespace Repository
 
             return (products, total);
         }
+        public async Task DeleteProduct(int id)
+        {
+            var product = await _dbSHOPContext.Products.FindAsync(id);
+            if (product != null)
+            {
+                _dbSHOPContext.Products.Remove(product);
+                await _dbSHOPContext.SaveChangesAsync();
+            }
+        }
 
     }
+
 }

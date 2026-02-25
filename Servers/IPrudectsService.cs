@@ -8,6 +8,8 @@ namespace Servers
     {
         Task<PageResponseDTO<ProductDTO>> GetProducts(string? name, int? minPrice, int? maxprice, int[]? categoriesId,
             int? limit, string? orderby, int? offset);
+        Task DeleteProduct(int id);
+        Task<ProductDTO> GetProductById(int id);
 
     }
 }
