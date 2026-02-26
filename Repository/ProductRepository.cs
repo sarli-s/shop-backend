@@ -16,7 +16,9 @@ namespace Repository
 
         public async Task<Product> GetProductById(int id)
         {
-            return await _dbSHOPContext.Products.FindAsync(id);
+            return await _dbSHOPContext.Products
+                .Include(p => p.Category) // זה יגרום לקטגוריה להיטען ולא להיות null
+                .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
         public async Task<(List<Product> Items, int TotalCount)> GetProducts(string? description, int? minPrice, int? maxPrice, int[]? categoryIds,
@@ -85,7 +87,8 @@ namespace Repository
 
         public async Task UpdateProduct(int id, Product product)
         {
-            _dbSHOPContext.Entry(product).State = EntityState.Modified;
+            product.ProductId = id; // מבטיח שה-ID מעודכן
+            _dbSHOPContext.Products.Update(product);
             await _dbSHOPContext.SaveChangesAsync();
         }
 
