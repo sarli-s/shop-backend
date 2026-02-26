@@ -17,6 +17,11 @@ namespace Repository
         {
             return await _dbSHOPContext.Categories.ToListAsync();
         }
+        public async Task<Category> GetCategoryByName(string name)
+        {
+            return await _dbSHOPContext.Categories
+                .FirstOrDefaultAsync(c => c.CategoryName == name);
+        }
 
     }
 }

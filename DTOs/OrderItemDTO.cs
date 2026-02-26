@@ -11,6 +11,7 @@ namespace DTOs
         string ProductName,
         int Quantity,
         string Popularcolore,
-        string Customtext);
+        string Customtext,
+        double Price);
 }
 

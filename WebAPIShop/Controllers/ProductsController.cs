@@ -56,6 +56,22 @@ namespace WebAPIShop.Controllers
             await _prudectsService.DeleteProduct(id);
             return NoContent(); // מחזיר קוד 204 (הצליח אבל אין תוכן להחזיר)
         }
+        // WebAPIShop/Controllers/ProductsController.cs
+
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> Create([FromBody] ProductDTO productDto)
+        {
+            var createdProduct = await _prudectsService.AddProduct(productDto);
+            return CreatedAtAction(nameof(GetById), new { id = createdProduct.ProductId }, createdProduct);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ProductDTO>> Update(int id, [FromBody] ProductDTO productDto)
+        {
+            if (id != productDto.ProductId) return BadRequest();
+            await _prudectsService.UpdateProduct(id, productDto);
+            return Ok(productDto);
+        }
 
 
     }
