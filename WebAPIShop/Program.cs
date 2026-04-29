@@ -8,6 +8,7 @@ using WebAPIShop;
 using WebAPIShop.Middleware;
 using Microsoft.AspNetCore.Builder;
 using PresidentsApp.Middlewares;
+using WebAPIShop.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -28,12 +29,14 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 
-builder.Services.AddDbContext<dbSHOPContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Ayal")));
+builder.Services.AddDbContext<dbSHOPContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("projectWithAngular")));
 
 builder.Host.UseNLog();
 
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IRatingService, RatingService>();
+
+builder.Services.AddCustomRateLimiter();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
@@ -65,6 +68,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAngular");
+
+app.UseRateLimiter();
 
 app.UseErrorHandlingMiddleware();
 
