@@ -10,13 +10,15 @@ public class PrudectsService : IPrudectsService
 {
     private readonly IProductRepository _productRepository;
     private readonly ICategoriesRepository _categoryRepository;
+    private readonly ISearchService _searchService;
     IMapper _mapper;
 
-    public PrudectsService(IProductRepository productRepository, IMapper mapper, ICategoriesRepository categoryRepository)
+    public PrudectsService(IProductRepository productRepository, IMapper mapper, ICategoriesRepository categoryRepository, ISearchService searchService)
     {
         _productRepository = productRepository;
         _mapper = mapper;
         _categoryRepository = categoryRepository;
+        _searchService = searchService;
     }
 
     public async Task<PageResponseDTO<ProductDTO>> GetProducts(string? description, int? minPrice, int? maxprice, int[]? categoriesId,
@@ -39,6 +41,7 @@ public class PrudectsService : IPrudectsService
     public async Task DeleteProduct(int id)
     {
         await _productRepository.DeleteProduct(id);
+        await _searchService.SeedAsync();
     }
     public async Task<ProductDTO> GetProductById(int id)
     {
@@ -58,6 +61,7 @@ public class PrudectsService : IPrudectsService
         product.CategoryId = category.CategoryId;
 
         var newProduct = await _productRepository.AddProduct(product);
+        await _searchService.SeedAsync();
         return _mapper.Map<Product, ProductDTO>(newProduct);
     }
 
@@ -72,6 +76,7 @@ public class PrudectsService : IPrudectsService
         }
 
         await _productRepository.UpdateProduct(id, product);
+        await _searchService.SeedAsync();
         return productDto;
     }
 }
